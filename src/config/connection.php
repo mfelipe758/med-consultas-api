@@ -1,8 +1,8 @@
 <?php
 $host = 'db';
-$user = 'todo_user';
-$password = 'example_user_password';
-$database = 'todo_db';
+$user = 'user';
+$password = 'user_password';
+$database = 'medconsultas';
 
 $conn = new mysqli($host, $user, $password, $database);
 if ($conn->connect_error) {

@@ -11,10 +11,10 @@ services:
   db:
     image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: example_root_password
-      MYSQL_DATABASE: todo_db
-      MYSQL_USER: todo_user
-      MYSQL_PASSWORD: example_user_password
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: medconsultas
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
     volumes:
       - todo-data:/var/lib/mysql
 volumes:
