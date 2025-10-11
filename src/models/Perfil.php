@@ -2,13 +2,16 @@
 
 namespace models;
 
-class Perfil {
+class Perfil implements \JsonSerializable {
     private string $id;
     private ?string $descricao;
 
     public function __construct(string $id = '', ?string $descricao = null) {
         $this->id = $id;
         $this->descricao = $descricao;
+    }
+    public function jsonSerialize(): array {
+        return get_object_vars($this);
     }
 
     public function getId(): string {

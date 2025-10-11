@@ -2,7 +2,7 @@
 
 namespace models;
 
-class Consulta {
+class Consulta implements \JsonSerializable {
     private ?int $id;
     private int $idAgendamento;
     private ?string $dataHoraRealizada;
@@ -17,6 +17,9 @@ class Consulta {
         $this->diagnostico = $diagnostico;
         $this->observacoes = $observacoes;
         $this->receita = $receita;
+    }
+    public function jsonSerialize(): array {
+        return get_object_vars($this);
     }
 
     public function getId(): ?int {

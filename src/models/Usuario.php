@@ -2,7 +2,7 @@
 
 namespace models;
 
-class Usuario {
+class Usuario implements \JsonSerializable{
     private ?int $id;
     private string $email;
     private string $senha;
@@ -13,6 +13,15 @@ class Usuario {
         $this->email = $email;
         $this->senha = $senha;
         $this->ativo = $ativo;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'ativo' => $this->ativo
+        ];
     }
 
     public function getId(): ?int {

@@ -2,7 +2,7 @@
 
 namespace models;
 
-class Medico {
+class Medico implements \JsonSerializable {
     private ?int $id;
     private string $nome;
     private int $crm;
@@ -17,6 +17,16 @@ class Medico {
         $this->dataInscricao = $dataInscricao;
         $this->enderecoId = $enderecoId;
         $this->usuarioId = $usuarioId;
+    }
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'crm' => $this->crm,
+            'dataInscricao' => $this->dataInscricao,
+            'enderecoId' => $this->enderecoId,
+            'usuarioId' => $this->usuarioId
+        ];
     }
 
     public function getId(): ?int {

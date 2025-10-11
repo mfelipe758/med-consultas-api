@@ -2,7 +2,7 @@
 
 namespace models;
 
-class Especialidade {
+class Especialidade implements \JsonSerializable {
     private ?int $id;
     private string $titulo;
     private ?string $descricao;
@@ -11,6 +11,10 @@ class Especialidade {
         $this->id = $id;
         $this->titulo = $titulo;
         $this->descricao = $descricao;
+    }
+
+    public function jsonSerialize(): array {
+        return get_object_vars($this);
     }
 
     public function getId(): ?int {

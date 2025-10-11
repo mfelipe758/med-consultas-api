@@ -2,13 +2,16 @@
 
 namespace models;
 
-class Horario {
+class Horario implements \JsonSerializable {
     private ?int $id;
     private string $horaMinuto;
 
     public function __construct(?int $id = null, string $horaMinuto = '') {
         $this->id = $id;
         $this->horaMinuto = $horaMinuto;
+    }
+    public function jsonSerialize(): array {
+        return get_object_vars($this);
     }
 
     public function getId(): ?int {

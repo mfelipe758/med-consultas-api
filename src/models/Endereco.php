@@ -2,7 +2,7 @@
 
 namespace models;
 
-class Endereco {
+class Endereco implements \JsonSerializable {
     private ?int $id;
     private ?string $cep;
     private ?string $estado;
@@ -21,6 +21,10 @@ class Endereco {
         $this->bairro = $bairro;
         $this->numero = $numero;
         $this->complemento = $complemento;
+    }
+
+    public function jsonSerialize(): array {
+        return get_object_vars($this);
     }
 
     public function getId(): ?int {

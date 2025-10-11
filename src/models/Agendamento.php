@@ -4,7 +4,7 @@ namespace models;
 
 require_once 'StatusAgendamento.php';
 
-class Agendamento {
+class Agendamento implements \JsonSerializable{
     private ?int $id;
     private int $idPaciente;
     private int $idMedico;
@@ -21,6 +21,17 @@ class Agendamento {
         $this->idHorario = $idHorario;
         $this->dataConsulta = $dataConsulta;
         $this->status = $status;
+    }
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'idPaciente' => $this->idPaciente,
+            'idMedico' => $this->idMedico,
+            'idEspecialidade' => $this->idEspecialidade,
+            'idHorario' => $this->idHorario,
+            'dataConsulta' => $this->dataConsulta,
+            'status' => $this->status->value
+        ];
     }
 
     public function getId(): ?int {
