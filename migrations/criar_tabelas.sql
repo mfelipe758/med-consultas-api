@@ -1,7 +1,5 @@
--- Garante que estamos usando o banco de dados correto
 USE medconsultas;
 
--- Apaga as tabelas na ordem inversa de dependência para evitar erros
 DROP TABLE IF EXISTS consultas;
 DROP TABLE IF EXISTS agendamentos;
 DROP TABLE IF EXISTS medicos_tem_especialidades;
@@ -13,10 +11,6 @@ DROP TABLE IF EXISTS usuarios_tem_perfis;
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS perfis;
 DROP TABLE IF EXISTS horarios;
-
--- =====================================================
--- CRIAÇÃO DAS TABELAS
--- =====================================================
 
 CREATE TABLE perfis (
                         id VARCHAR(50) NOT NULL PRIMARY KEY,
@@ -115,9 +109,7 @@ CREATE TABLE consultas (
                            FOREIGN KEY (id_agendamento) REFERENCES agendamentos(id) ON DELETE CASCADE
 );
 
--- =====================================================
--- INSERÇÃO DE DADOS INICIAIS
--- =====================================================
+
 INSERT INTO perfis (id, descricao) VALUES
                                        ('ADMIN', 'Administrador do sistema'),
                                        ('MEDICO', 'Profissional da saúde'),
