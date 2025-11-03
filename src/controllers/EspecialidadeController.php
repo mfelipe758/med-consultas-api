@@ -22,7 +22,7 @@ class EspecialidadeController {
     }
 
     public function criar($dados) {
-        $especialidade = new Especialidade(null, $dados['titulo'], $dados['descricao']);
+        $especialidade = new Especialidade(null, $dados['titulo'], $dados['descricao'], []);
         if ($this->repository->criar($especialidade)) {
             http_response_code(201);
             echo json_encode(['mensagem' => 'Especialidade criada com sucesso']);
@@ -33,7 +33,7 @@ class EspecialidadeController {
     }
 
     public function editar($id, $dados) {
-        $especialidade = new Especialidade($id, $dados['titulo'], $dados['descricao']);
+        $especialidade = new Especialidade($id, $dados['titulo'], $dados['descricao'], []);
         if ($this->repository->editar($especialidade)) {
             echo json_encode(['mensagem' => 'Especialidade atualizada com sucesso']);
         } else {

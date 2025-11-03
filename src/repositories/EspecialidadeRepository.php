@@ -23,7 +23,7 @@ class EspecialidadeRepository{
         $result = $this->conn->query("SELECT * FROM especialidades");
         $especialidades = [];
         while ($data = $result->fetch_assoc()) {
-            $especialidades[] = new Especialidade((int)$data['id'], $data['titulo'], $data['descricao']);
+            $especialidades[] = new Especialidade((int)$data['id'], $data['titulo'], $data['descricao'], []);
         }
         return $especialidades;
     }
@@ -35,7 +35,7 @@ class EspecialidadeRepository{
         $stmt->execute();
         $result = $stmt->get_result();
         if($row = $result->fetch_assoc()){
-            return new Especialidade((int)$row['id'], $row['titulo'], $row['descricao']);
+            return new Especialidade((int)$row['id'], $row['titulo'], $row['descricao'], []);
         }
         return null;
     }

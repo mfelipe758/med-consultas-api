@@ -2,6 +2,7 @@
 
 namespace repositories;
 use models\Perfil;
+use models\PerfilTipo;
 
 class PerfilRepository{
     private \mysqli $conn;
@@ -14,7 +15,7 @@ class PerfilRepository{
         $result = $this->conn->query("SELECT * FROM perfis");
         $perfis = [];
         while ($data = $result->fetch_assoc()) {
-            $perfis[] = new Perfil($data['id'], $data['descricao']);
+            $perfis[] = new Perfil(PerfilTipo::from($data['id']), $data['descricao']);
         }
         return $perfis;
     }
@@ -26,7 +27,7 @@ class PerfilRepository{
         $stmt->execute();
         $result = $stmt->get_result();
         if($row = $result->fetch_assoc()){
-            return new Perfil($row['id'], $row['descricao']);
+            return new Perfil(PerfilTipo::from($row['id']), $row['descricao']);
         }
         return null;
     }

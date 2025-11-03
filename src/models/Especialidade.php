@@ -7,11 +7,35 @@ class Especialidade implements \JsonSerializable {
     private string $titulo;
     private ?string $descricao;
 
-    public function __construct(?int $id = null, string $titulo = '', ?string $descricao = null) {
+    /**
+     * @var int[]
+     */
+    private array $medicos;
+
+    /**
+     * @param int|null $id
+     * @param string $titulo
+     * @param string|null $descricao
+     * @param int[] $medicos
+     */
+    public function __construct(?int $id, string $titulo, ?string $descricao, array $medicos)
+    {
         $this->id = $id;
         $this->titulo = $titulo;
         $this->descricao = $descricao;
+        $this->medicos = $medicos;
     }
+
+    public function getMedicos(): array
+    {
+        return $this->medicos;
+    }
+
+    public function setMedicos(array $medicos): void
+    {
+        $this->medicos = $medicos;
+    }
+
 
     public function jsonSerialize(): array {
         return get_object_vars($this);

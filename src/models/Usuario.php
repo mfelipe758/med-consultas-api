@@ -7,13 +7,24 @@ class Usuario implements \JsonSerializable{
     private string $email;
     private string $senha;
     private bool $ativo;
+    private ?Perfil $perfil;
 
-    public function __construct(?int $id = null, string $email = '', string $senha = '', bool $ativo = true) {
+    /**
+     * @param int|null $id
+     * @param string $email
+     * @param bool $ativo
+     * @param string $senha
+     * @param Perfil $perfil
+     */
+    public function __construct(?int $id, string $email, string $senha, bool $ativo, Perfil $perfil)
+    {
         $this->id = $id;
         $this->email = $email;
         $this->senha = $senha;
         $this->ativo = $ativo;
+        $this->perfil = $perfil;
     }
+
 
     public function jsonSerialize(): mixed
     {
@@ -23,6 +34,17 @@ class Usuario implements \JsonSerializable{
             'ativo' => $this->ativo
         ];
     }
+
+    public function getPerfil(): Perfil
+    {
+        return $this->perfil;
+    }
+
+    public function setPerfil(Perfil $perfil): void
+    {
+        $this->perfil = $perfil;
+    }
+
 
     public function getId(): ?int {
         return $this->id;

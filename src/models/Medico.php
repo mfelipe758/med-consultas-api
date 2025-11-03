@@ -9,6 +9,14 @@ class Medico implements \JsonSerializable {
     private string $dataInscricao;
     private ?int $enderecoId;
     private int $usuarioId;
+    /**
+     * @var int[]
+     */
+    public array $especialidades;
+    /**
+     * @var int[]
+     */
+    public array $agendamentos;
 
     public function __construct(?int $id = null, string $nome = '', int $crm = 0, string $dataInscricao = '', ?int $enderecoId = null, int $usuarioId = 0) {
         $this->id = $id;

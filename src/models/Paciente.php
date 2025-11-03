@@ -11,6 +11,10 @@ class Paciente implements \JsonSerializable{
     private string $dataNascimento;
     private ?int $enderecoId;
     private int $usuarioId;
+    /**
+     * @var int[]
+     */
+    public array $agendamentos;
 
     public function __construct(?int $id = null, string $nome = '', string $cpf = '', string $dataNascimento = '', ?int $enderecoId = null, int $usuarioId = 0) {
         $this->id = $id;
