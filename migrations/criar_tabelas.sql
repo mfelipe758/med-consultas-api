@@ -21,15 +21,9 @@ CREATE TABLE usuarios (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
                           email VARCHAR(255) NOT NULL UNIQUE,
                           senha VARCHAR(255) NOT NULL,
-                          ativo BOOLEAN NOT NULL DEFAULT TRUE
-);
-
-CREATE TABLE usuarios_tem_perfis (
-                                     usuario_id BIGINT NOT NULL,
-                                     perfil_id VARCHAR(50) NOT NULL,
-                                     PRIMARY KEY (usuario_id, perfil_id),
-                                     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-                                     FOREIGN KEY (perfil_id) REFERENCES perfis(id) ON DELETE CASCADE
+                          ativo BOOLEAN NOT NULL DEFAULT TRUE,
+                          perfil_id VARCHAR(50) NOT NULL,
+                          FOREIGN KEY (perfil_id) REFERENCES perfis(id)
 );
 
 CREATE TABLE enderecos (
