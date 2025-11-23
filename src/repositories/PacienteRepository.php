@@ -42,6 +42,17 @@ class PacienteRepository{
         }
         return null;
     }
+    public function buscarPorUsuarioId(int $usuarioId): ?Paciente {
+        $sql = "SELECT * FROM pacientes WHERE usuario_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $usuarioId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($row = $result->fetch_assoc()){
+            return new Paciente((int)$row['id'], $row['nome'], $row['cpf'], $row['data_nascimento'], (int)$row['endereco_id'], (int)$row['usuario_id']);
+        }
+        return null;
+    }
 
     public function editar(Paciente $paciente): bool{
         $id = $paciente->getId();

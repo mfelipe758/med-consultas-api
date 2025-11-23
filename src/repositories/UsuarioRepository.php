@@ -12,7 +12,7 @@ class UsuarioRepository{
         $this->conn = $conn;
     }
 
-    public function criar(Usuario $usuario): bool{
+    public function criar(Usuario $usuario): ?int{
         $sql = "INSERT INTO usuarios (email, senha, ativo, perfil_id) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $email = $usuario->getEmail();
@@ -20,7 +20,26 @@ class UsuarioRepository{
         $ativo = $usuario->isAtivo();
         $perfilId = $usuario->getPerfil()->getId()->value;
         $stmt->bind_param("ssis", $email, $senha, $ativo, $perfilId);
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return $this->conn->insert_id;
+        }
+        return null;
+    }
+    public function buscarPorEmail(string $email): ?Usuario {
+        $sql = "SELECT u.*, p.descricao as perfil_descricao 
+                FROM usuarios u 
+                JOIN perfis p ON u.perfil_id = p.id 
+                WHERE u.email = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($row = $result->fetch_assoc()){
+            $perfil = new Perfil(PerfilTipo::from($row['perfil_id']), $row['perfil_descricao']);
+            return new Usuario((int)$row['id'], $row['email'], $row['senha'], (bool)$row['ativo'], $perfil);
+        }
+        return null;
     }
 
     public function buscarTodos(): array {
