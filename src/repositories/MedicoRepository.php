@@ -43,6 +43,52 @@ class MedicoRepository{
         return null;
     }
 
+    public function buscarPorUsuarioId(int $usuarioId): ?Medico {
+        $sql = "SELECT * FROM medicos WHERE usuario_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $usuarioId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($row = $result->fetch_assoc()){
+            return new Medico((int)$row['id'], $row['nome'], (int)$row['crm'], $row['data_inscricao'], (int)$row['endereco_id'], (int)$row['usuario_id']);
+        }
+        return null;
+    }
+
+    public function buscarTitulosEspecialidades(int $medicoId): array {
+        $sql = "SELECT e.titulo 
+                FROM especialidades e
+                JOIN medicos_tem_especialidades mte ON e.id = mte.id_especialidade
+                WHERE mte.id_medico = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $medicoId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $titulos = [];
+        while($row = $result->fetch_assoc()) {
+            $titulos[] = $row['titulo'];
+        }
+        return $titulos;
+    }
+
+    public function vincularEspecialidades(int $medicoId, array $especialidadesIds): void {
+        if (empty($especialidadesIds)) return;
+
+        $sql = "INSERT INTO medicos_tem_especialidades (id_medico, id_especialidade) VALUES (?, ?)";
+        $stmt = $this->conn->prepare($sql);
+
+        foreach ($especialidadesIds as $especialidadeId) {
+            $idEsp = (int)$especialidadeId;
+            $stmt->bind_param("ii", $medicoId, $idEsp);
+            try {
+                $stmt->execute();
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+    }
+
     public function editar(Medico $medico): bool{
         $id = $medico->getId();
         $nome = $medico->getNome();
