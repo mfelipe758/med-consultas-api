@@ -2,6 +2,7 @@
 
 namespace repositories;
 use models\Especialidade;
+use models\Medico;
 
 class EspecialidadeRepository{
     private \mysqli $conn;
@@ -23,7 +24,8 @@ class EspecialidadeRepository{
         $result = $this->conn->query("SELECT * FROM especialidades");
         $especialidades = [];
         while ($data = $result->fetch_assoc()) {
-            $especialidades[] = new Especialidade((int)$data['id'], $data['titulo'], $data['descricao'], []);
+            $medicos = $this->buscarMedicosPorEspecialidade((int)$data['id']);
+            $especialidades[] = new Especialidade((int)$data['id'], $data['titulo'], $data['descricao'], $medicos);
         }
         return $especialidades;
     }
@@ -35,9 +37,34 @@ class EspecialidadeRepository{
         $stmt->execute();
         $result = $stmt->get_result();
         if($row = $result->fetch_assoc()){
-            return new Especialidade((int)$row['id'], $row['titulo'], $row['descricao'], []);
+            $medicos = $this->buscarMedicosPorEspecialidade((int)$row['id']);
+            return new Especialidade((int)$row['id'], $row['titulo'], $row['descricao'], $medicos);
         }
         return null;
+    }
+
+    private function buscarMedicosPorEspecialidade(int $especialidadeId): array {
+        $sql = "SELECT m.* FROM medicos m
+                JOIN medicos_tem_especialidades mte ON m.id = mte.id_medico
+                WHERE mte.id_especialidade = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $especialidadeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $medicos = [];
+        while ($row = $result->fetch_assoc()) {
+            $medicos[] = new Medico(
+                (int)$row['id'],
+                $row['nome'],
+                (int)$row['crm'],
+                $row['data_inscricao'],
+                (int)$row['endereco_id'],
+                (int)$row['usuario_id']
+            );
+        }
+        return $medicos;
     }
 
     public function editar(Especialidade $especialidade): bool{
